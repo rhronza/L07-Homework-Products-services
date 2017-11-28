@@ -6,16 +6,19 @@ import org.springframework.stereotype.Service;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import cz.expertkom.ju.entity.PriceProduct;
 import cz.expertkom.ju.entity.PriceProductDto;
+import cz.expertkom.ju.entity.PriceProducts;
 
 
 @Service
-public class DownloadProductToDbIml implements DownloadProductToDb{
+public class DownloadProductsToDbIml implements DownloadProductsToDb{
 	
 	@Autowired
 	PriceProductDb ppDb;
 	
 	private PriceProductDto ppDto = new PriceProductDto();
+	private PriceProducts pps;
 	
 	private String[] listStringSplit;
 	
@@ -26,7 +29,7 @@ public class DownloadProductToDbIml implements DownloadProductToDb{
 	boolean priceVATfound = false;
 	boolean priceWithoutVatfound = false;
 
-	public void downloadProductTodb() {
+	public void downloadProductsTodb() {
 			
 	final String WEB_PAGE_DOWNLOAD = "https://softcom.cz";
 
@@ -44,7 +47,6 @@ public class DownloadProductToDbIml implements DownloadProductToDb{
 				/* pokud řetez končí ".html" - jedná se o název výrobku*/ 
 				if (!productFound && sProduct.endsWith(".html")&& (!(sProduct.equals(predchozi)))) {
 					this.ppDto.setProductURI(sProduct);;
-					System.out.println("sproduct:"+sProduct+", predchozi:"+predchozi);
 					predchozi=sProduct;
 					productFound=true;
 					nextIsName=true;
@@ -87,38 +89,23 @@ public class DownloadProductToDbIml implements DownloadProductToDb{
 					priceWithoutVatfound = false;
 					
 				}
-			} 
-		
+			}
+			pps = ppDb.getAllProducts();
+			System.out.println("\n-----------------------------------------------" );
+			System.out.println(" Produkty ze stránky: "+WEB_PAGE_DOWNLOAD );
+			System.out.println("-----------------------------------------------" );
+			for (PriceProduct pp: pps.getPriceProducts()) {
+				System.out.println(pp.getId()+": "+pp.getNameProduct()+", s DPH: "+pp.getPriceWithVAT()+", bez DPH: "+pp.getPriceWithOutVAT() );
+			}
+			System.out.println("\n\n");
+			
 		} catch (UnirestException e) {
 			System.out.println("Problém s načtenením stránky");
 			this.ppDto.setNameProduct("Problém s načtenením stránky:"+e.getLocalizedMessage());
 			this.ppDto.setPriceWithVAT("?????");
 			this.ppDto.setPriceWithOutVAT("??????");
+			ppDb.insertPriceproduct(ppDto);
 			e.printStackTrace();
 		}
-		
-		/*
-		int line = 1;
-		
-		System.out.println("************************************");
-		System.out.println("Celý před splitem");
-		System.out.println("************************************");
-		*/
-		/*System.out.println(stringDownloadedWebPage);*/
-
-		/*
-		System.out.println("************************************");
-		System.out.println("Řádky po splitu");
-		System.out.println("************************************");
-		*/
-		/*
-		line=1;
-		for (String s: listStringSplit) {
-			System.out.println("line "+line+":"+s);
-			line++;
-		}
-		*/
-		
-
-}
+	}
 }
