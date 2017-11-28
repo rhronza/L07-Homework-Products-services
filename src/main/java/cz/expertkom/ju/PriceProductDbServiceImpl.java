@@ -37,19 +37,12 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 	}
 	
 	public PriceProducts getOneProductToList(Long id ) {
-		System.out.println("M1");
 		List<PriceProduct> priceProductsList = new ArrayList<PriceProduct>();
 		PriceProduct pp = new PriceProduct();
 		pp = priceProductRepository.findOne(id);
-		System.out.println("M2");
 		priceProductsList.add(pp);
-		
-		
 		PriceProducts priceProducts = new PriceProducts();
-		
-		System.out.println("M4");
 		priceProducts.setPriceProducts(priceProductsList);
-		System.out.println("M5");
 		return priceProducts;
 	}
 
