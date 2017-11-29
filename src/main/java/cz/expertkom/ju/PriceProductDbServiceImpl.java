@@ -1,5 +1,6 @@
 package cz.expertkom.ju;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		pp.setProductURI(priceProductDto.getProductURI());
 		pp.setPriceWithVAT(priceProductDto.getPriceWithVAT());
 		pp.setPriceWithOutVAT(priceProductDto.getPriceWithOutVAT());
+		pp.setInsertedDateTime(LocalDateTime.now());
 		/* ulož instanci do tabulky*/
 		priceProductRepository.save(pp);
 	}
@@ -43,6 +45,9 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		priceProductsList.add(pp);
 		PriceProducts priceProducts = new PriceProducts();
 		priceProducts.setPriceProducts(priceProductsList);
+		System.out.println(	priceProductsList.get(0).getNameProduct()+", vloženo:"+
+							priceProductsList.get(0).getInsertedDateTime()+", změněno: "+
+							priceProductsList.get(0).getUpdatedDateTime());
 		return priceProducts;
 	}
 
@@ -56,6 +61,7 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		priceProduct.setProductURI(ppdto.getProductURI());
 		priceProduct.setPriceWithVAT(ppdto.getPriceWithVAT());
 		priceProduct.setPriceWithOutVAT(ppdto.getPriceWithOutVAT());
+		priceProduct.setUpdatedDateTime(LocalDateTime.now());
 		priceProductRepository.save(priceProduct);
 	}
 	

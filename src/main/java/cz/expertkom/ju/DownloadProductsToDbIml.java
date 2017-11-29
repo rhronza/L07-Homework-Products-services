@@ -95,7 +95,7 @@ public class DownloadProductsToDbIml implements DownloadProductsToDb{
 			System.out.println(" Produkty ze stránky: "+WEB_PAGE_DOWNLOAD );
 			System.out.println("-----------------------------------------------" );
 			for (PriceProduct pp: pps.getPriceProducts()) {
-				System.out.println(pp.getId()+": "+pp.getNameProduct()+", s DPH: "+pp.getPriceWithVAT()+", bez DPH: "+pp.getPriceWithOutVAT() );
+				System.out.println(pp.getId()+": "+pp.getNameProduct()+", s DPH: "+pp.getPriceWithVAT()+", bez DPH: "+pp.getPriceWithOutVAT()+", vloženo: "+pp.getInsertedDateTime());
 			}
 			System.out.println("\n\n");
 			
