@@ -1,7 +1,8 @@
 package cz.expertkom.ju;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		pp.setProductURI(priceProductDto.getProductURI());
 		pp.setPriceWithVAT(priceProductDto.getPriceWithVAT());
 		pp.setPriceWithOutVAT(priceProductDto.getPriceWithOutVAT());
-		pp.setInsertedDateTime(LocalDateTime.now());
+		pp.setInsertedDateTime(new Date());
 		/* ulož instanci do tabulky*/
 		priceProductRepository.save(pp);
 	}
@@ -33,8 +34,8 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		List<PriceProduct> priceProductsList = priceProductRepository.findAll(); 
 		PriceProducts priceProducts = new PriceProducts();
 		priceProducts.setPriceProducts(priceProductsList);
-		long pocetZzn = priceProductRepository.count();
-		System.out.println("Počet záznamů tabulky:"+pocetZzn);
+		//long pocetZzn = priceProductRepository.count();
+		//System.out.println("Počet záznamů tabulky:"+pocetZzn);
 		return priceProducts;
 	}
 	
@@ -61,7 +62,7 @@ public class PriceProductDbServiceImpl implements PriceProductDb {
 		priceProduct.setProductURI(ppdto.getProductURI());
 		priceProduct.setPriceWithVAT(ppdto.getPriceWithVAT());
 		priceProduct.setPriceWithOutVAT(ppdto.getPriceWithOutVAT());
-		priceProduct.setUpdatedDateTime(LocalDateTime.now());
+		priceProduct.setUpdatedDateTime(Calendar.getInstance());
 		priceProductRepository.save(priceProduct);
 	}
 	
